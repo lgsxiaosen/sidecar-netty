@@ -16,10 +16,12 @@
 
 package com.github.lgsxiaosen.cloud.sidecar;
 
+import com.ecwid.consul.v1.agent.model.NewService;
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import static org.springframework.cloud.commons.util.IdUtils.getDefaultInstanceId;
 
@@ -32,10 +34,15 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.actuator.HasFeatures;
 import org.springframework.cloud.commons.util.InetUtils;
+import org.springframework.cloud.consul.discovery.ConsulDiscoveryProperties;
+import org.springframework.cloud.consul.discovery.HeartbeatProperties;
+import org.springframework.cloud.consul.serviceregistry.ConsulAutoRegistration;
+import org.springframework.cloud.consul.serviceregistry.ConsulRegistrationCustomizer;
 import org.springframework.cloud.netflix.eureka.EurekaInstanceConfigBean;
 import org.springframework.cloud.netflix.eureka.metadata.DefaultManagementMetadataProvider;
 import org.springframework.cloud.netflix.eureka.metadata.ManagementMetadata;
 import org.springframework.cloud.netflix.eureka.metadata.ManagementMetadataProvider;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -46,6 +53,8 @@ import com.netflix.appinfo.HealthCheckHandler;
 import com.netflix.discovery.EurekaClientConfig;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -162,6 +171,53 @@ public class SidecarConfiguration {
 				final LocalApplicationHealthIndicator healthIndicator) {
 			return new LocalApplicationHealthCheckHandler(healthIndicator);
 		}
+
+		/**
+		 * TODO 整合consul
+		 */
+		/*@Bean
+		@ConditionalOnMissingBean
+		public ConsulAutoRegistration consulRegistration(ConsulDiscoveryProperties properties, ApplicationContext applicationContext,
+														 ObjectProvider<List<ConsulRegistrationCustomizer>> registrationCustomizers, HeartbeatProperties heartbeatProperties) {
+			return registration(properties, applicationContext, registrationCustomizers.getIfAvailable(), heartbeatProperties);
+		}
+
+		private  ConsulAutoRegistration registration(ConsulDiscoveryProperties properties, ApplicationContext context,
+													 List<ConsulRegistrationCustomizer> registrationCustomizers,
+													 HeartbeatProperties heartbeatProperties) {
+//			RelaxedPropertyResolver propertyResolver = new RelaxedPropertyResolver(context.getEnvironment());
+
+			int port = sidecarProperties.getPort();
+			String hostname = sidecarProperties.getHostname();
+			String ipAddress = sidecarProperties.getIpAddress();
+			if (!StringUtils.hasText(hostname) && StringUtils.hasText(this.hostname)) {
+				hostname = this.hostname;
+			}
+			if(!StringUtils.hasText(hostname)) {
+				hostname = properties.getHostname();
+			}
+			URI healthUri = sidecarProperties.getHealthUri();
+			URI homePageUri = sidecarProperties.getHomePageUri();
+			NewService service = new NewService();
+
+			String appName = ConsulAutoRegistration.getAppName(properties, env);
+			service.setId(ConsulAutoRegistration.getInstanceId(properties, context));
+			if(!properties.isPreferAgentAddress()) {
+				service.setAddress(hostname);
+			}
+			service.setName(ConsulAutoRegistration.normalizeForDns(appName));
+			service.setTags(ConsulAutoRegistration.createTags(properties));
+
+			if (properties.getPort() != null) {
+				service.setPort(properties.getPort());
+				// we know the port and can set the check
+				ConsulAutoRegistration.setCheck(service, properties, context, heartbeatProperties);
+			}
+
+			ConsulAutoRegistration registration = new ConsulAutoRegistration(service, properties, context, heartbeatProperties);
+			ConsulAutoRegistration.customize(registrationCustomizers, registration);
+			return registration;
+		}*/
 	}
 
 	@Bean
