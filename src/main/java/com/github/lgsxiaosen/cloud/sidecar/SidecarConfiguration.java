@@ -16,12 +16,10 @@
 
 package com.github.lgsxiaosen.cloud.sidecar;
 
-import com.ecwid.consul.v1.agent.model.NewService;
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingClass;
 import static org.springframework.cloud.commons.util.IdUtils.getDefaultInstanceId;
 
@@ -34,15 +32,10 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.actuator.HasFeatures;
 import org.springframework.cloud.commons.util.InetUtils;
-import org.springframework.cloud.consul.discovery.ConsulDiscoveryProperties;
-import org.springframework.cloud.consul.discovery.HeartbeatProperties;
-import org.springframework.cloud.consul.serviceregistry.ConsulAutoRegistration;
-import org.springframework.cloud.consul.serviceregistry.ConsulRegistrationCustomizer;
 import org.springframework.cloud.netflix.eureka.EurekaInstanceConfigBean;
 import org.springframework.cloud.netflix.eureka.metadata.DefaultManagementMetadataProvider;
 import org.springframework.cloud.netflix.eureka.metadata.ManagementMetadata;
 import org.springframework.cloud.netflix.eureka.metadata.ManagementMetadataProvider;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.ConfigurableEnvironment;
@@ -53,8 +46,6 @@ import com.netflix.appinfo.HealthCheckHandler;
 import com.netflix.discovery.EurekaClientConfig;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URI;
-import java.util.List;
 import java.util.Map;
 
 /**
