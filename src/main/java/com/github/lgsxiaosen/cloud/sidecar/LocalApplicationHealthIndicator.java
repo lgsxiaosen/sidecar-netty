@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.xiaosen.cloud.sidecar;
+package com.github.lgsxiaosen.cloud.sidecar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;

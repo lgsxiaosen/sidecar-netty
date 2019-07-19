@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.xiaosen.cloud.sidecar;
+package com.github.lgsxiaosen.cloud.sidecar;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ssl.NoopHostnameVerifier;

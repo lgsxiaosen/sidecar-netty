@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.xiaosen.cloud.sidecar;
+package com.github.lgsxiaosen.cloud.sidecar;
 
 import java.util.List;
 
